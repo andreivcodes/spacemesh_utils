@@ -23,17 +23,29 @@ WORKDIR /app/post-rs/initializer
 
 RUN cargo build --release
 
-FROM rust:latest
+FROM ubuntu
 
-RUN apt update && \
-    apt install -y \
-    ocl-icd-opencl-dev \
+RUN apt-get update && apt-get -y upgrade \
+    && apt-get install -y \
+    apt-utils \
+    unzip \
+    tar \
+    curl \
+    xz-utils \
     ocl-icd-libopencl1 \
     opencl-headers \
-    clinfo
+    clinfo \
+    ;
+
+RUN mkdir -p /etc/OpenCL/vendors && \
+    echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
+
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 
 WORKDIR /app
 
 COPY --from=builder /app/post-rs/target/release/initializer ./initializer
 
-CMD ["./initializer", "list-providers"]
+ENTRYPOINT ["./initializer"]
+CMD ["--help"]

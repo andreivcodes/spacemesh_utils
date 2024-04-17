@@ -2,7 +2,7 @@
 
 This is a collection of Docker images which builds the [Spacemesh](https://spacemesh.io) stack from source and makes it easy to run.
 
-# Node
+# Node - `andreivcodes/spacemesh-miner`
 
 `-e FILESIZE=` - The file size of your post files.
 
@@ -20,7 +20,7 @@ Example:
 
 `docker run -e FILE_SIZE=2147483648 -e NUM_UNITS=16 -e START=true -e SMESHING_COINBASE_ADDRESS=your_address -v /local/dir/path/for/post=./post-data -v /local/dir/path/for/node=./node-data andreivcodes/spacemesh-miner`
 
-# Initializer
+# Initializer - `andreivcodes/spacemesh-initializer`
 
 _Requirements:_
 

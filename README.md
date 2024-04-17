@@ -1,24 +1,21 @@
 # About
 
-This is a collection of Docker images which builds the [Spacemesh](https://spacemesh.io) stack from source and makes it easy to run.
+This repository contains Docker images designed to build and run the [Spacemesh](https://spacemesh.io/) stack from its source code. Below are details on running nodes and initializing processes.
 
 # Node
 
 ## `andreivcodes/spacemesh-miner`
 
-`-e FILESIZE=` - The file size of your post files.
+### Parameters:
 
-`-e NUM_UNITS=` - The number of post units.
+- `-e FILESIZE=`: File size of post files.
+- `-e NUM_UNITS=`: Number of post units.
+- `-e START=`: Initiates mining.
+- `-e SMESHING_COINBASE_ADDRESS=`: Mining reward address.
+- `-v /local/dir/path/for/post=./post-data`: Maps local post directory to container's post-data directory.
+- `-v /local/dir/path/for/node=./node-data`: Maps local node directory to container's node-data directory.
 
-`-e START=` - Start mining.
-
-`-e SMESHING_COINBASE_ADDRESS=` - The reward address for mining.
-
-`-v /local/dir/path/for/post=./post-data` - Maps the local `/local/dir/path/for/post` directory to the container `/post-data` directory. The container is hardcoded to use `/post-data` for post data.
-
-`-v /local/dir/path/for/node=./node-data` - Maps the local `/local/dir/path/for/node` directory to the container `/node-data` directory. The container is hardcoded to use `/node-data` for node state data.
-
-Example:
+### Example:
 
 `docker run -e FILE_SIZE=2147483648 -e NUM_UNITS=16 -e START=true -e SMESHING_COINBASE_ADDRESS=your_address -v /local/dir/path/for/post=./post-data -v /local/dir/path/for/node=./node-data andreivcodes/spacemesh-miner`
 
@@ -26,21 +23,21 @@ Example:
 
 ## `andreivcodes/spacemesh-initializer`
 
-_Requirements:_
+### Requirements:
 
-- _[Docker](http://docker.com)_
-- _[Nvidia Container Tookit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html)_
-- _Nvidia GPU_
+- [Docker](http://docker.com/)
+- [Nvidia Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html)
+- Nvidia GPU
 
-## Listing providers
+### Listing Providers:
 
-list-providers ouputs the available compute providers for initializing data.
+`list-providers` displays available compute providers for data initialization.
 
-Example:
+#### Example:
 
 `docker run --gpus 'all,"capabilities=compute,utility"' --rm -it andreivcodes/spacemesh-initializer -printProviders`
 
-Example output:
+#### Example output:
 
 ```
 2024-04-17T07:57:53.637570931Z ([]postrs.Provider) (len=2 cap=2) {
@@ -57,13 +54,13 @@ Example output:
 2024-04-17T07:57:53.637620651Z }
 ```
 
-## Initializing PoST data
+### Initializing PoST Data:
 
-Example:
+#### Example:
 
 `docker run --gpus 'all,"capabilities=compute,utility"' --rm -it andreivcodes/spacemesh-initializer -provider=0 -numUnits=16 -commitmentAtxId=c230c51669d1fcd35860131e438e234726b2bd5f9adbbd91bd88a718e7e98ecb -datadir ./post -genproof`
 
-Example output:
+#### Example output:
 
 ```
 2024-04-17T08:10:28.903434472Z 2024/04/17 08:10:28 cli: generating new identity
@@ -84,6 +81,4 @@ Example output:
 2024-04-17T08:20:24.627760788Z 2024-04-17T08:20:24.627Z	INFO	initialization: starting to write file	{"fileIndex": 1, "currentNumLabels": 0, "targetNumLabels": 268435456, "startPosition": 268435456}
 ```
 
-There is a preconfigured [runpod.io](https://runpod.io) template using this image here
-
-[https://runpod.io/console/deploy?template=6747jlo193&ref=1bqdw1sc](https://runpod.io/console/deploy?template=6747jlo193&ref=1bqdw1sc)
+For a preconfigured [runpod.io](https://runpod.io/) template using this image, visit [here](https://runpod.io/console/deploy?template=6747jlo193&ref=1bqdw1sc).

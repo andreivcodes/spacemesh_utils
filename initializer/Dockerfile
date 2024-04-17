@@ -1,7 +1,8 @@
-FROM rust:latest AS builder
+FROM golang AS builder
 
 RUN apt update && \
     apt install -y \
+    unzip \
     git \
     build-essential \
     cmake \
@@ -13,15 +14,18 @@ RUN apt update && \
     opencl-headers \
     clinfo
 
-RUN rustup default nightly
-
 WORKDIR /app
 
-RUN git clone https://github.com/spacemeshos/post-rs
+RUN git clone https://github.com/spacemeshos/post
 
-WORKDIR /app/post-rs/initializer
+WORKDIR /app/post
 
-RUN cargo build --release
+RUN git fetch --all --tags
+RUN git checkout tags/v0.12.5
+
+RUN make install
+RUN make get-postrs-lib
+RUN make build
 
 FROM ubuntu
 
@@ -45,7 +49,8 @@ ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 
 WORKDIR /app
 
-COPY --from=builder /app/post-rs/target/release/initializer ./initializer
+COPY --from=builder /app/post/build/postcli .
+COPY --from=builder /app/post/build/libpost.so .
 
-ENTRYPOINT ["./initializer"]
+ENTRYPOINT ["./postcli"]
 CMD ["--help"]

@@ -1,4 +1,4 @@
-name: initializer
+name: miner
 
 on:
   push:

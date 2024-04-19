@@ -58,7 +58,7 @@ This repository contains Docker images designed to build and run the [Spacemesh]
 
 #### Example:
 
-`docker run --gpus 'all,"capabilities=compute,utility"' --rm -it andreivcodes/spacemesh-initializer -provider=0 -numUnits=16 -commitmentAtxId=c230c51669d1fcd35860131e438e234726b2bd5f9adbbd91bd88a718e7e98ecb -datadir ./post -genproof`
+`docker run -v ./host-post-data:/post --gpus 'all,"capabilities=compute,utility"' --rm -it andreivcodes/spacemesh-initializer -provider=0 -numUnits=8 -commitmentAtxId=c230c51669d1fcd35860131e438e234726b2bd5f9adbbd91bd88a718e7e98ecb -datadir /post -genproof`
 
 #### Example output:
 

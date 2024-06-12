@@ -27,6 +27,7 @@ This repository contains Docker images designed to build and run the [Spacemesh]
 
 - [Docker](http://docker.com/)
 - [Nvidia Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html)
+- [Nvidia CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit)
 - Nvidia GPU
 
 ### Listing Providers:

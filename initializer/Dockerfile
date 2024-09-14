@@ -1,33 +1,38 @@
-FROM golang AS builder
+FROM golang:latest AS builder
 
 RUN apt update && \
     apt install -y \
-    unzip \
     git \
     build-essential \
     cmake \
     llvm-dev \
     libclang-dev \
-    clang \
-    ocl-icd-opencl-dev \
+    ;
+
+RUN apt-get update && apt-get -y upgrade \
+    && apt-get install -y \
+    apt-utils \
+    unzip \
+    tar \
+    curl \
+    xz-utils \
     ocl-icd-libopencl1 \
     opencl-headers \
-    clinfo
+    clinfo \
+    ;
+
 
 WORKDIR /app
 
-RUN git clone https://github.com/spacemeshos/post
+RUN git clone --depth 1 --branch v0.12.8 https://github.com/spacemeshos/post
 
 WORKDIR /app/post
 
-RUN git fetch --all --tags
-RUN git checkout tags/v0.12.8
+RUN make install && \
+    make get-postrs-lib && \
+    make build
 
-RUN make install
-RUN make get-postrs-lib
-RUN make build
-
-FROM ubuntu
+FROM ubuntu:latest
 
 RUN apt-get update && apt-get -y upgrade \
     && apt-get install -y \

@@ -21,7 +21,7 @@ RUN git clone https://github.com/spacemeshos/post
 WORKDIR /app/post
 
 RUN git fetch --all --tags
-RUN git checkout tags/v0.12.5
+RUN git checkout tags/v0.12.8
 
 RUN make install
 RUN make get-postrs-lib
